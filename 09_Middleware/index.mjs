@@ -79,6 +79,20 @@ app.get("/api/users/:id", resolveIndexByUserId, (req, res) => {
   res.send(mockUsers[findUserIndex]);
 });
 
+// post request
+app.post("/api/users", (req, res) => {
+  console.log(req.body);
+  const { body } = req; // destructuring the body from the request object
+
+  // Create a new user object by:
+  // 1. Assigning the ID as the last user's ID + 1
+  // 2. Spreading (...body) the incoming request data (username, displayName, etc.)
+  const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
+  mockUsers.push(newUser);
+  res.status(201);
+  return res.send(newUser);
+});
+
 // PUT REQUEST: Update a user by ID
 app.put("/api/users/:id", resolveIndexByUserId, (req, res) => {
   const body = req.body; // Extract the request body (new data for the user)
